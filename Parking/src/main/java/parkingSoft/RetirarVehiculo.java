@@ -5,6 +5,8 @@
  */
 package parkingSoft;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author dell
@@ -41,6 +43,11 @@ public class RetirarVehiculo extends javax.swing.JPanel {
 
         button1.setBackground(new java.awt.Color(244, 148, 55));
         button1.setLabel("Retirar");
+        button1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -80,6 +87,17 @@ public class RetirarVehiculo extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+        
+        
+        
+        
+    }//GEN-LAST:event_button1ActionPerformed
+public double pago(Timestamp estadia){
+      
+    return 0;
+    
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;

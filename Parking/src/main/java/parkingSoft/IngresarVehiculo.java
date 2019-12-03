@@ -5,7 +5,11 @@
  */
 package parkingSoft;
 
+import com.itextpdf.text.DocumentException;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -139,8 +143,8 @@ public class IngresarVehiculo extends javax.swing.JPanel {
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         String tipoVehiculos="";
-//instanciamos de la clase ConeccionMySql para realizar el ingreso de un nuevo vehiculo
-        ConeccionMySql con=new ConeccionMySql();
+        //Determinamos que tipo de vehiculo esta ingresando.
+        Conexion con=new Conexion();
         if(radioMoto.isSelected()){
             tipoVehiculos="Motocicleta";
         }
@@ -149,8 +153,19 @@ public class IngresarVehiculo extends javax.swing.JPanel {
           tipoVehiculos="Automovil";
 
         }
+    //instanciamos de la clase Conexion para realizar el ingreso de un nuevo vehiculo
         con.ingresarVehiculo(placaVehiculo.getText(),nombrePropietario.getText(),tipoVehiculos);
         
+        //Instanciamos de la clase CrearPdf para generar el recibo
+        CrearPdf pdf=new CrearPdf();
+        try {
+            
+            pdf.crearDocumento(placaVehiculo.getText(), nombrePropietario.getText(), tipoVehiculos);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(IngresarVehiculo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(IngresarVehiculo.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_button1ActionPerformed
 
