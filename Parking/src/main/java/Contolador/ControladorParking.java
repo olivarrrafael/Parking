@@ -2,10 +2,12 @@
 package Contolador;
 
 import Modelo.ConsultaVehiculos;
+import Modelo.Tickets;
 import Modelo.Vehiculo;
 import Vista.Principal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class ControladorParking implements ActionListener {
     Principal view;
     Vehiculo modelo1;
     ConsultaVehiculos modelo2;
+    Tickets modelo3=new Tickets();
     
     public ControladorParking (Principal view,Vehiculo modelo1,ConsultaVehiculos modelo2){
         
@@ -71,23 +74,68 @@ public class ControladorParking implements ActionListener {
             String propietario=view.getPanelIngresarVehiculo().txtNombreIngreso.getText();
             
             //le pasamos las variables generadas posteriormente para luego pasarlas al modelo
+           
             
             modelo1.setPlaca(placa);
             modelo1.setPropietario(propietario);
             modelo1.setTipoVehiculo(tipoAuto);
             modelo1.setHoraEntrada(horaEntrada);
             modelo1.setEstado("Disponible");
-     
+            
+            
+            
             
             if(modelo2.ingresarVehiculo(modelo1)){
                 
                 JOptionPane.showMessageDialog(null,"Vehiculo registrado con exito");
+                
+  
+                
+                view.getPanelIngresarVehiculo().rdAutoIngreso.setSelected(false);
+                view.getPanelIngresarVehiculo().rdMotoIngreso.setSelected(false);
+                view.getPanelIngresarVehiculo().txtPlacaIngreso.setText(null);
+                view.getPanelIngresarVehiculo().txtNombreIngreso.setText(null);
                 
             }else{
                 
                 JOptionPane.showMessageDialog(null,"Error al registrar vehiculo");
                 
             }
+            
+             try {
+                    modelo3.setHoraEntrada(horaEntrada);
+                    modelo3.setPropietario(propietario);
+                    modelo3.setPlaca(placa);
+                    modelo3.setVehiculo(tipoAuto);
+                    modelo3.ticketEntrada();
+                } catch (Exception a) {
+                    System.err.print(a);
+                }
+             
+               try {
+
+		if ((new File("C:\\Users\\dell\\Desktop\\Parking/"+propietario+".pdf")).exists()) {
+
+			Process p = Runtime
+			   .getRuntime()
+			   .exec("rundll32 url.dll,FileProtocolHandler C:\\Users\\dell\\Desktop\\Parking/"+propietario+".pdf");
+			p.waitFor();
+				
+		} else {
+
+			System.out.println("File is not exists");
+
+		}
+
+		System.out.println("Done");
+
+  	  } catch (Exception ex) {
+		ex.printStackTrace();
+	  }
+           
+
+             
+             
             
             
         }
@@ -251,7 +299,31 @@ public class ControladorParking implements ActionListener {
              view.getPanelListarVehiculos().jCalendario.setText(null);
              view.getPanelListarVehiculos().txtPlacaLista.setText(null);
              view.getPanelListarVehiculos().txtPropietarioLista.setText(null);
+             
          }
+         
+         
+         //Al cumplirse esta condicional se realizara el cierre del dia bajo los criterios requeridos.
+         
+         if(e.getSource()==view.getPanelListarVehiculos().btnCerrar){
+         
+            //Obtenemos la placa de la caja de texto la cual sera usada por el modelo para realizar el update.
+            
+            modelo1.setPlaca(view.getPanelListarVehiculos().txtPlacaLista.getText());
+            modelo1.setPropietario(view.getPanelListarVehiculos().txtPropietarioLista.getText());
+            modelo1.setTipoVehiculo(view.getPanelListarVehiculos().comboTipoVehiculo.getSelectedItem().toString());
+            modelo1.setEstado(view.getPanelListarVehiculos().comboEstado.getSelectedItem().toString());
+            modelo1.setFechaSolicitud(view.getPanelListarVehiculos().jCalendario.getText());
+           
+            if(modelo2.cierreVehiculos(modelo1)){
+              
+                JOptionPane.showMessageDialog(null,"El total de ingresos del dia seleccionado es de "+ modelo1.getCierreTotal()+"$");
+                
+            }else{
+                JOptionPane.showMessageDialog(null,"No se encontraron resultados");
+            }
+            
+        }
         
         
     }

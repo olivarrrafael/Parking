@@ -15,8 +15,17 @@ public class Vehiculo {
     private double valorPagado;
     private String estado;
     private String FechaSolicitud;
+    private double cierreTotal;
     private ArrayList <Vehiculo> lista;
 
+    public double getCierreTotal() {
+        return cierreTotal;
+    }
+
+    public void setCierreTotal(double cierreTotal) {
+        this.cierreTotal = cierreTotal;
+    }
+    
     
      public String getFechaSolicitud() {
         return FechaSolicitud;

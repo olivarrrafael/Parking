@@ -116,7 +116,8 @@ public class PanelListarVehiculos extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tablaListar);
 
-        btnCerrar.setLabel("Cerrar");
+        btnCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnCerrar.setLabel("Cierre");
 
         btnBuscar.setLabel("Buscar");
 

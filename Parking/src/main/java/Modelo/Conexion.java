@@ -12,7 +12,7 @@ public class Conexion {
    private Connection conexion=null;
    private final String url="jdbc:mysql://localhost:3306/bd_parking";
    private final String user="root";
-   private final String pass="123";
+   private final String pass="1234";
    private final String registro=" INSERT INTO vehiculos (placa,propietario,tipo_vehiculo,hora_entrada,estado) VALUES (?,?,?,?,?)";
    
    

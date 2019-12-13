@@ -139,9 +139,8 @@ public class ConsultaVehiculos extends Conexion{
       Connection con=getConexion();
       ResultSet rs=null;
       String sqlRegistro="SELECT placa,propietario,tipo_vehiculo,hora_entrada,hora_salida,valor_pagado,estado FROM vehiculos "
-              + "WHERE estado LIKE '"+vehiculo.getEstado()+"%' AND tipo_vehiculo LIKE '%"+vehiculo.getTipoVehiculo() +"%' AND hora_entrada LIKE '%"+vehiculo.getFechaSolicitud()+"%' AND propietario LIKE '%"+vehiculo.getPropietario() +"%' AND placa LIKE '%"+vehiculo.getPlaca() +"%'";
+      + "WHERE estado LIKE '"+vehiculo.getEstado()+"%' AND tipo_vehiculo LIKE '%"+vehiculo.getTipoVehiculo() +"%' AND hora_entrada LIKE '%"+vehiculo.getFechaSolicitud()+"%' AND propietario LIKE '%"+vehiculo.getPropietario() +"%' AND placa LIKE '%"+vehiculo.getPlaca() +"%'";
       
-       //OR placa LIKE '"+vehiculo.getPlaca()+"' OR propietario LIKE '"+vehiculo.getPropietario()+"'
       /*
       Creamos un ArrayList de tipo Vehiculo el cual contendra toda la informacion
       extraida de la base de datos y luego sera pasada al modelo Vehiculo
@@ -194,6 +193,29 @@ public class ConsultaVehiculos extends Conexion{
 }
       }
       
+       public boolean cierreVehiculos(Vehiculo vehiculo){
+       
+      Connection con=getConexion();
+      ResultSet rs=null;
+      String sqlRegistro="SELECT SUM(valor_pagado) FROM vehiculos "
+      + "WHERE estado LIKE '"+vehiculo.getEstado()+"%' AND tipo_vehiculo LIKE '%"+vehiculo.getTipoVehiculo() +"%' AND hora_entrada LIKE '%"+vehiculo.getFechaSolicitud()+"%' AND propietario LIKE '%"+vehiculo.getPropietario() +"%' AND placa LIKE '%"+vehiculo.getPlaca() +"%'";
+       
+            try {
+                  PreparedStatement st=con.prepareStatement(sqlRegistro);
+                  rs=st.executeQuery();
+                  rs.first();
+                  
+                  vehiculo.setCierreTotal(Double.parseDouble(rs.getString(1)));
+                 
+                  return true;
+                  
+            } catch (Exception e) {
+                
+                System.err.print(e);
+                
+            return false;
+            }
+       }
       
     
 }
